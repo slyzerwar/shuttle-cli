@@ -23,7 +23,7 @@ Last login: Thu Dec 15 16:26:45 2016 from 127.0.0.1
 
 ## Installation
 
-`GoLang` is required to build the source code. If you don't have it, have a look at https://golang.org/doc/install
+`Go` is required to build the source code. If you don't have it, have a look at https://golang.org/doc/install
 
 Make sure you don't forget to setup `GOPATH` and add the workspace's bin subdirectory to your `PATH`.
 ```
