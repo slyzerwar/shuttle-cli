@@ -33,12 +33,13 @@ $ export PATH=$PATH:$GOPATH/bin
 Download repository to the proper place:
 ```
 $ go get -v github.com/slyzerwar/shuttle-cli
-$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli
+// Install project dependencies
+$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli/; go get -v ./...
 ```
 
 To install shuttle-cli to be accessible from anywhere on your system:
 ```
-$ go install
+$ go build -i -o $GOPATH/bin/shuttle -ldflags "-s -w" github.com/slyzerwar/shuttle-cli
 ```
 That's it. Now you can use shuttle-cli:
 ```
