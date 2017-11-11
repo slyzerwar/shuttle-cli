@@ -107,10 +107,17 @@ func execCommand(program string, args ...string) {
 }
 
 func printUsage() {
-	fmt.Println("Usage: ")
-	fmt.Println("	shuttle <number> (Connect to host)")
-	fmt.Println("	shuttle ls (Show hosts)")
-	fmt.Println("	shuttle e (Edit shuttle configuration)")
+	fmt.Println("shuttle-cli is a simple cli SSH shortcut menu for macOS");
+	fmt.Println()
+	fmt.Println("Usage:\t", "shuttle <index>")
+	fmt.Println("\t\t", "shuttle <command>")
+	fmt.Println()
+	fmt.Println("<index> is the index of host")
+	fmt.Println()
+	fmt.Println("Commands:")
+	fmt.Println()
+	fmt.Println("ls\t", "List hosts")
+	fmt.Println("e\t", "Edit shuttle configuration")
 }
 
 func AppendHost(HostMap map[string]interface{}) {
