@@ -30,7 +30,7 @@ type Host struct {
 var Hosts []Host
 
 func main() {
-	if (len(os.Args) <= 1) {
+	if len(os.Args) <= 1 {
 		printUsage()
 		os.Exit(1)
 	}
@@ -48,7 +48,7 @@ func main() {
 	ParseHosts(c.Hosts)
 
 	switch os.Args[1] {
-		// Print all shuttle hosts config
+		// List hosts
 		case "ls": {
 			table := tablewriter.NewWriter(os.Stdout)
 			table.SetHeader([]string{"#", "name", "command"})
@@ -63,9 +63,37 @@ func main() {
 			execCommand("vi", usr.HomeDir + "/.shuttle.json")
 		}
 		default: {
-			// Connect to the selected host
+			// Connect to the selected host by index
 			if len(os.Args) == 2 {
-				connect()
+				connect(os.Args[1])
+			} else if len(os.Args) == 3 && os.Args[1] == "--name" {
+				// Connect by name matching
+				var matchedIndx []int
+				for i, host := range Hosts {
+					if strings.Contains(host.Name, os.Args[2]) {
+						matchedIndx = append(matchedIndx, i)
+					}
+				}
+				if matchedIndx == nil {
+					fmt.Println("No matching name found")
+					os.Exit(1);
+				}
+				if len(matchedIndx) == 1 {
+					connect(fmt.Sprint(matchedIndx[0]))
+				}
+				if len(matchedIndx) > 1 {
+					// Multiple matching entries
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"#", "name", "command"})
+					for _,v := range matchedIndx {
+						table.Append([]string{fmt.Sprint(v), Hosts[v].Name, Hosts[v].Cmd})
+					}
+					table.Render()
+					fmt.Println("Which one ?")
+					var input string
+					fmt.Scanf("%s", &input)
+					connect(input)
+				}
 			} else {
 				printUsage()
 				os.Exit(1)
@@ -74,10 +102,10 @@ func main() {
 	}
 }
 
-func connect() {
-	var i, err = strconv.Atoi(os.Args[1])
+func connect(hostIndx string) {
+	var i, err = strconv.Atoi(hostIndx)
 	if err != nil {
-		fmt.Println("The first argument should be a number but found ", os.Args[1])
+		fmt.Println("The first argument should be a number but found:", hostIndx)
 		os.Exit(1)
 	}
 	if len(Hosts) == 0 {
@@ -85,7 +113,7 @@ func connect() {
 		os.Exit(1)
 	}
 	if i < 0 || i >= len(Hosts) {
-		fmt.Println(os.Args[1] + " is invalid or not in the list")
+		fmt.Println(hostIndx + " is invalid or not in the list")
 		os.Exit(1)
 	}
 	Cmd := Hosts[i].Cmd
@@ -110,14 +138,17 @@ func printUsage() {
 	fmt.Println("shuttle-cli is a simple cli SSH shortcut menu for macOS");
 	fmt.Println()
 	fmt.Println("Usage:\t", "shuttle <index>")
-	fmt.Println("\t\t", "shuttle <command>")
+	fmt.Println("\t", "shuttle --name <name>")
+	fmt.Println("\t", "shuttle <command>")
 	fmt.Println()
-	fmt.Println("<index> is the index of host")
+	fmt.Println("<name>\t name of the configured host")
+	fmt.Println("<index>\t index of the configured host")
 	fmt.Println()
 	fmt.Println("Commands:")
 	fmt.Println()
 	fmt.Println("ls\t", "List hosts")
 	fmt.Println("e\t", "Edit shuttle configuration")
+	fmt.Println()
 }
 
 func AppendHost(HostMap map[string]interface{}) {
