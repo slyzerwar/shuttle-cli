@@ -58,41 +58,41 @@ func main() {
 			}
 			table.Render() // Send output
 		}
-		// Connect to host
-		case "c": {
-			if (len(os.Args) != 3) {
-				printUsage()
-				os.Exit(1)
-			}
-			var i,err = strconv.Atoi(os.Args[2])
-			if err != nil {
-				fmt.Println(os.Args[2] + " is supposed to be a number")
-				os.Exit(1)
-			}
-			if len(Hosts) == 0 {
-				fmt.Println("No hosts to connect")
-				os.Exit(1)
-			}
-			if i < 0 || i >= len(Hosts) {
-				fmt.Println(os.Args[2] + " is invalid or not in the list")
-				os.Exit(1)
-			}
-
-			Cmd := Hosts[i].Cmd
-			CmdFields := strings.Fields(Cmd)
-			ProgramName := CmdFields[0]
-			ProgramArgs := CmdFields[1:]
-
-			execCommand(ProgramName, ProgramArgs...)
-		}
-		// Edit config
+		// Edit shuttle config
 		case "e": {
 			execCommand("vi", usr.HomeDir + "/.shuttle.json")
 		}
 		default: {
-			printUsage()
+			// Connect to the selected host
+			if len(os.Args) == 2 {
+				connect()
+			} else {
+				printUsage()
+				os.Exit(1)
+			}
 		}
 	}
+}
+
+func connect() {
+	var i, err = strconv.Atoi(os.Args[1])
+	if err != nil {
+		fmt.Println("The first argument should be a number but found ", os.Args[1])
+		os.Exit(1)
+	}
+	if len(Hosts) == 0 {
+		fmt.Println("No hosts to connect")
+		os.Exit(1)
+	}
+	if i < 0 || i >= len(Hosts) {
+		fmt.Println(os.Args[1] + " is invalid or not in the list")
+		os.Exit(1)
+	}
+	Cmd := Hosts[i].Cmd
+	CmdFields := strings.Fields(Cmd)
+	ProgramName := CmdFields[0]
+	ProgramArgs := CmdFields[1:]
+	execCommand(ProgramName, ProgramArgs...)
 }
 
 func execCommand(program string, args ...string) {
@@ -108,8 +108,8 @@ func execCommand(program string, args ...string) {
 
 func printUsage() {
 	fmt.Println("Usage: ")
+	fmt.Println("	shuttle <number> (Connect to host)")
 	fmt.Println("	shuttle ls (Show hosts)")
-	fmt.Println("	shuttle c <number> (Connect to host)")
 	fmt.Println("	shuttle e (Edit shuttle configuration)")
 }
 
