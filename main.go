@@ -51,7 +51,7 @@ func main() {
 		// Print all shuttle hosts config
 		case "ls": {
 			table := tablewriter.NewWriter(os.Stdout)
-			table.SetHeader([]string{"number", "name", "command"})
+			table.SetHeader([]string{"#", "name", "command"})
 
 			for index, v := range Hosts {
 				table.Append([]string{fmt.Sprint(index), v.Name, v.Cmd})
