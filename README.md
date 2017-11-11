@@ -5,36 +5,49 @@ shuttle-cli is a simple cli SSH shortcut menu for macOS inspired by https://gith
 Shuttle GUI version is not required, all you need is .shuttle.json file in your home directory.
 
 Tested with macOS, Linux
-```
-$ shuttle ls
-+--------+----------------------------------------------------------------------+
-| NUMBER | NAME                 | COMMAND                                       |
-+--------+----------------------+-----------------------------------------------+
-| 0      | Main Item            | ssh username@dev.example.com                  |
-| 1      | Submenu Item #1.1    | ssh username@blog.example.com                 |
-+--------+----------------------+-----------------------------------------------+
 
-$ shuttle c 1
+```
+# Show the configured hosts
+$ shuttle ls
++-----+----------------------------------------------------------------------+
+| #   | NAME                 | COMMAND                                       |
++-----+----------------------+-----------------------------------------------+
+| 0   | Main Item            | ssh username@dev.example.com                  |
+| 1   | Submenu Item #1.1    | ssh username@blog.example.com                 |
++-----+----------------------+-----------------------------------------------+
+ 
+# Connect to the host by index
+$ shuttle 0
 Last login: Thu Dec 15 16:26:45 2016 from 127.0.0.1
-[username@dev.example.com ~]# 
+[username@dev.example.com ~]#  
+ 
+# Connect to the host by name
+$ shuttle --name Submenu
+Last login: Thu Dec 15 16:27:54 2016 from 127.0.0.1
+[username@blog.example.com ~]# 
 
 ```
 
 
 ## Installation
 
-`Go` is required to build the source code. If you don't have it, have a look at https://golang.org/doc/install
+Required Prerequisites:
+
+- `Go`
+- `dep` Go dependency management tool
 
 Make sure you don't forget to setup `GOPATH` and add the workspace's bin subdirectory to your `PATH`.
 ```
 $ export PATH=$PATH:$GOPATH/bin
 ```
 
-Download repository to the proper place:
+Download repository and install dependencies:
 ```
 $ go get -v github.com/slyzerwar/shuttle-cli
-// Install project dependencies
-$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli/; go get -v ./...
+ 
+# Install dependencies
+$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli/
+$ dep ensure
 ```
 
 To install shuttle-cli to be accessible from anywhere on your system:
@@ -44,10 +57,21 @@ $ go build -i -o $GOPATH/bin/shuttle -ldflags "-s -w" github.com/slyzerwar/shutt
 That's it. Now you can use shuttle-cli:
 ```
 $ shuttle
-Usage:
-        shuttle ls (Show hosts)
-        shuttle c <number> (Connect to host)
-        shuttle e (Edit shuttle configuration)
+
+shuttle-cli is a simple cli SSH shortcut menu for macOS
+ 
+Usage:	 shuttle <index>
+	 shuttle --name <name>
+	 shuttle <command>
+ 
+<name>	 name of the configured host
+<index>	 index of the configured host
+ 
+Commands:
+ 
+ls	 List hosts
+e	 Edit shuttle configuration
+ 
 ```
 
 If you already have shuttle installed, make sure you have `~/.shuttle.json`. However if you're running on Linux or macOS but don't want to install shuttle (GUI version), you can create shuttle config by using this example: https://github.com/fitztrev/shuttle/blob/master/tests/.shuttle.json
@@ -56,8 +80,22 @@ If you already have shuttle installed, make sure you have `~/.shuttle.json`. How
 
 Start shuttle by typing:
 
-    $ shuttle
-    Usage:
-        shuttle ls (Show hosts)
-        shuttle c <number> (Connect to host)
-        shuttle e (Edit shuttle configuration)
+```
+$ shuttle
+
+shuttle-cli is a simple cli SSH shortcut menu for macOS
+ 
+Usage:	 shuttle <index>
+	 shuttle --name <name>
+	 shuttle <command>
+ 
+<name>	 name of the configured host
+<index>	 index of the configured host
+ 
+Commands:
+ 
+ls	 List hosts
+e	 Edit shuttle configuration
+ 
+```
+
