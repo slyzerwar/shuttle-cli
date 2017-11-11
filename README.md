@@ -23,7 +23,7 @@ Last login: Thu Dec 15 16:26:45 2016 from 127.0.0.1
 
 ## Installation
 
-`GoLang` is required to build the source code. If you don't have it, have a look at https://golang.org/doc/install
+`Go` is required to build the source code. If you don't have it, have a look at https://golang.org/doc/install
 
 Make sure you don't forget to setup `GOPATH` and add the workspace's bin subdirectory to your `PATH`.
 ```
@@ -33,12 +33,13 @@ $ export PATH=$PATH:$GOPATH/bin
 Download repository to the proper place:
 ```
 $ go get -v github.com/slyzerwar/shuttle-cli
-$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli
+// Install project dependencies
+$ cd $GOPATH/src/github.com/slyzerwar/shuttle-cli/; go get -v ./...
 ```
 
 To install shuttle-cli to be accessible from anywhere on your system:
 ```
-$ go install
+$ go build -i -o $GOPATH/bin/shuttle -ldflags "-s -w" github.com/slyzerwar/shuttle-cli
 ```
 That's it. Now you can use shuttle-cli:
 ```
